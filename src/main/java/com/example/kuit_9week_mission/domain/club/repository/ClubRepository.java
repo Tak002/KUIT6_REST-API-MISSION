@@ -43,4 +43,28 @@ public class ClubRepository {
             """;
         return jdbc.queryForObject(sql, (rs, rowNum) -> rs.getLong("last_id"));
     }
+
+    public Club findById(Long clubId) {
+        String sql = """
+            SELECT club_id, name, description, status
+            FROM Clubs
+            WHERE club_id = ?
+            """;
+        return jdbc.queryForObject(sql, MAPPER, clubId);
+    }
+
+    public Club update(Club updatedClub) {
+        String sql = """
+            UPDATE Clubs
+            SET name = ?, description = ?, status = ?
+            WHERE club_id = ?
+            """;
+        jdbc.update(sql,
+                updatedClub.name(),
+                updatedClub.description(),
+                updatedClub.status().name(),
+                updatedClub.clubId()
+        );
+        return updatedClub;
+    }
 }

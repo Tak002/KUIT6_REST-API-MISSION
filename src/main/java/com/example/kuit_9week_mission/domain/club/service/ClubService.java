@@ -2,6 +2,7 @@ package com.example.kuit_9week_mission.domain.club.service;
 
 import com.example.kuit_9week_mission.domain.club.model.Club;
 import com.example.kuit_9week_mission.domain.club.model.ClubPageResponse;
+import com.example.kuit_9week_mission.domain.club.model.ClubStatus;
 import com.example.kuit_9week_mission.domain.club.repository.ClubRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,11 @@ public class ClubService {
         long currentLastId = byPage.isEmpty() ? lastId+1 : byPage.get(PAGE_SIZE - 1).clubId();
 
         return new ClubPageResponse(byPage,lastId, currentLastId < lastId);
+    }
+
+    public Club updateClub(Long clubId, String name, String description, ClubStatus status) {
+        Club updatedClub = new Club(clubId, name, description, status);
+        return clubRepository.update(updatedClub);
     }
     // TODO 2: 동아리 정보 수정 기능 구현(토큰 불필요) - PUT
 
