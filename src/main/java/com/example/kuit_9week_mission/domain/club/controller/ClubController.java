@@ -16,8 +16,8 @@ public class ClubController {
     private final ClubMemberService clubMemberService;
 
     @GetMapping("/page/{page}")
-    public ApiResponse<?> getAllClubs(@PathVariable Long page) {
-        return ApiResponse.ok(clubService.getPagedClubs(page));
+    public ApiResponse<?> getAllClubs(@PathVariable Long page, @RequestParam(required = false) String status) {
+        return ApiResponse.ok(clubService.getPagedClubs(page,status));
     }
     @PutMapping("/{clubId}")
     public ApiResponse<?> updateClub(@PathVariable Long clubId, @RequestBody Club club) {

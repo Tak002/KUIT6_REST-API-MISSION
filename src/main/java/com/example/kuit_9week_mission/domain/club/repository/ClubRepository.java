@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.util.List;
 
-import static org.springframework.data.relational.core.query.Query.query;
-
 @Repository
 @RequiredArgsConstructor
 public class ClubRepository {
@@ -24,24 +22,45 @@ public class ClubRepository {
             rs.getString("description"),
             ClubStatus.valueOf(rs.getString("status"))
     );
-    public List<Club> findByPage(Long page, int size){
+    public List<Club> findByPageWithStatus(Long page, int size,String status){
         Long baseId = (page - 1) * size;
+        if (status == null) {
+            String sql = """
+                SELECT club_id, name, description, status
+                FROM Clubs
+                ORDER BY club_id ASC
+                LIMIT ? OFFSET ?
+                """;
+            return jdbc.query(sql, MAPPER, size, baseId);
+
+        }
         String sql = """
             SELECT club_id, name, description, status
             FROM Clubs
-            WHERE club_id > ?
+            WHERE status = ?
             ORDER BY club_id ASC
-            LIMIT ?
+            LIMIT ? OFFSET ?
             """;
-        return jdbc.query(sql, MAPPER, baseId, size);
+        return jdbc.query(sql, MAPPER, status, size, baseId);
+
     }
 
-    public Long findLastId(){
-        String sql = """
+    public Long findLastId(String status){
+        if (status == null) {
+
+            String sql = """
             SELECT MAX(club_id) AS last_id
             FROM Clubs
             """;
-        return jdbc.queryForObject(sql, (rs, rowNum) -> rs.getLong("last_id"));
+            return jdbc.queryForObject(sql, (rs, rowNum) -> rs.getLong("last_id"));
+
+        }
+        String sql = """
+            SELECT MAX(club_id) AS last_id
+            FROM Clubs
+            WHERE status = ?
+            """;
+        return jdbc.queryForObject(sql, (rs, rowNum) -> rs.getLong("last_id"), status);
     }
 
     public Club findById(Long clubId) {

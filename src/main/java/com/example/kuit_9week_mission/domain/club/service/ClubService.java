@@ -39,11 +39,11 @@ public class ClubService {
      * }
      */
 
-    public ClubPageResponse getPagedClubs(Long page) {
+    public ClubPageResponse getPagedClubs(Long page,String status) {
 
-        List<Club> byPage = clubRepository.findByPage(page, PAGE_SIZE);
-        Long lastId = clubRepository.findLastId();
-        long currentLastId = byPage.isEmpty() ? lastId+1 : byPage.get(PAGE_SIZE - 1).clubId();
+        List<Club> byPage = clubRepository.findByPageWithStatus(page, PAGE_SIZE, status);
+        Long lastId = clubRepository.findLastId(status);
+        long currentLastId = byPage.isEmpty() ? lastId+1 : byPage.get(byPage.size()-1).clubId();
 
         return new ClubPageResponse(byPage,lastId, currentLastId < lastId);
     }
