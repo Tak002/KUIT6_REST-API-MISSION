@@ -67,4 +67,12 @@ public class ClubRepository {
         );
         return updatedClub;
     }
+
+    public void deleteById(Long clubId) {
+        String sql = """
+            DELETE FROM Clubs
+            WHERE club_id = ?
+            """;
+        jdbc.update(sql, clubId);
+    }
 }

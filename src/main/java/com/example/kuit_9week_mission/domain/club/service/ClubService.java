@@ -52,7 +52,8 @@ public class ClubService {
         Club updatedClub = new Club(clubId, name, description, status);
         return clubRepository.update(updatedClub);
     }
-    // TODO 2: 동아리 정보 수정 기능 구현(토큰 불필요) - PUT
 
-    // TODO 3: 동아리 삭제 기능 구현(토큰 불필요) - DELETE
+    public void deleteClub(Long clubId) {
+        clubRepository.deleteById(clubId);
+    }
 }

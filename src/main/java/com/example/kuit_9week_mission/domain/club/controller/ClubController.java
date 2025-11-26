@@ -24,4 +24,9 @@ public class ClubController {
         Club updatedClub = clubService.updateClub(clubId, club.name(), club.description(), club.status());
         return ApiResponse.ok(updatedClub);
     }
+    @DeleteMapping("/{clubId}")
+    public ApiResponse<?> deleteClub(@PathVariable Long clubId) {
+        clubService.deleteClub(clubId);
+        return ApiResponse.ok("동아리 삭제가 완료되었습니다.");
+    }
 }
