@@ -1,10 +1,12 @@
 package com.example.kuit_9week_mission.domain.club.repository;
 
+import com.example.kuit_9week_mission.domain.club.model.Club;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static java.time.LocalTime.now;
@@ -32,7 +34,18 @@ public class ClubMemberRepository {
         jdbc.update(sql, LocalDate.now(), clubId, studentId);
     }
 
-    // TODO: TODO 6을 구현하기 위해선 Club_Members 와 Clubs 테이블간의 JOIN 을 적절히 활용해야한다!
-
-
+    public List<String> findClubsOfStudent(Long studentId) {
+        String sql = """
+            SELECT c.name
+            FROM Club_Members cm
+            JOIN Clubs c ON c.club_id = cm.club_id
+            WHERE cm.student_id = ?
+            """;
+        List<String> clubs = jdbc.query(
+                sql,
+                (rs, rowNum) -> rs.getString("name"),
+                studentId
+        );
+        return clubs;
+    }
 }

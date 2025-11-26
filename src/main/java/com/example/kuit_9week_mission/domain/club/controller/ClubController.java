@@ -36,4 +36,8 @@ public class ClubController {
         clubMemberService.addMemberToClub(clubId, studentId);
         return ApiResponse.ok("동아리 가입이 완료되었습니다.");
     }
+    @GetMapping("/me")
+    public ApiResponse<?> getMyClubs(@StudentId Long studentId) {
+        return ApiResponse.ok(clubMemberService.getClubsOfStudentV1(studentId));
+    }
 }
