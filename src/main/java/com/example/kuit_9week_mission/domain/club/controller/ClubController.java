@@ -3,6 +3,7 @@ package com.example.kuit_9week_mission.domain.club.controller;
 import com.example.kuit_9week_mission.domain.club.model.Club;
 import com.example.kuit_9week_mission.domain.club.service.ClubMemberService;
 import com.example.kuit_9week_mission.domain.club.service.ClubService;
+import com.example.kuit_9week_mission.global.common.auth.StudentId;
 import com.example.kuit_9week_mission.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,5 +29,11 @@ public class ClubController {
     public ApiResponse<?> deleteClub(@PathVariable Long clubId) {
         clubService.deleteClub(clubId);
         return ApiResponse.ok("동아리 삭제가 완료되었습니다.");
+    }
+
+    @PostMapping("/{clubId}/members" )
+    public ApiResponse<?> addClubMember(@PathVariable Long clubId, @StudentId Long studentId) {
+        clubMemberService.addMemberToClub(clubId, studentId);
+        return ApiResponse.ok("동아리 가입이 완료되었습니다.");
     }
 }
