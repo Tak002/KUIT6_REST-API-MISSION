@@ -22,5 +22,10 @@ public class StudentService {
         return StudentInfoResponse.from(student);
     }
 
+    public StudentInfoResponse updateStudentName(Long studentId, String name) {
+        Student student = studentRepository.updateName(studentId, name).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND, new IllegalArgumentException("해당 학생이 존재하지 않습니다.")));
+        return StudentInfoResponse.from(student);
+    }
+
     // TODO 4: 현재 로그인한 학생 이름 수정하기(토큰 필요) - PATCH
 }

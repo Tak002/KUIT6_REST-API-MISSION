@@ -32,4 +32,11 @@ public class StudentRepository {
         String sql = "SELECT student_id, student_number, name FROM Students WHERE student_id = ?";
         return jdbc.query(sql, MAPPER, studentId).stream().findFirst();
     }
+
+    public Optional<Student> updateName(Long studentId, String name) {
+        String sql = "UPDATE Students SET name = ? WHERE student_id = ?";
+        jdbc.update(sql, name, studentId);
+
+        return findById(studentId);
+    }
 }

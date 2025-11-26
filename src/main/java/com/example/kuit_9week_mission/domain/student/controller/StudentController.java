@@ -6,9 +6,7 @@ import com.example.kuit_9week_mission.domain.student.service.StudentService;
 import com.example.kuit_9week_mission.global.common.auth.StudentId;
 import com.example.kuit_9week_mission.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/students")
@@ -23,6 +21,12 @@ public class StudentController {
     @GetMapping("/me")
     public ApiResponse<StudentInfoResponse> me(@StudentId Long studentId) {
         return ApiResponse.ok(studentService.getStudentInfo(studentId));
+    }
+
+    @PutMapping("/me/name")
+    public ApiResponse<StudentInfoResponse> updateName(@StudentId Long studentId, @RequestBody String name) {
+        StudentInfoResponse updatedInfo = studentService.updateStudentName(studentId,name);
+        return ApiResponse.ok(updatedInfo);
     }
 
 }
